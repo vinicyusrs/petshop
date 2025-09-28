@@ -12,4 +12,5 @@ public class HomeController {
         model.addAttribute("mensagem", "Bem-vindo ao PetShop!");
         return "home/home"; // Thymeleaf: templates/home.html
     }
+    
 }
