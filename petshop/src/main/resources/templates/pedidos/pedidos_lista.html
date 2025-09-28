@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="d-flex-full">
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+    <div class="content p-3">
+        <h1>Pedidos</h1>
+
+        <!-- Formulário de busca -->
+        <div class="mb-3">
+            <label class="form-label">Cliente e Status</label>
+            <form th:action="@{/pedidos/buscar}" method="get" class="d-flex gap-2">
+
+                <!-- Campo cliente -->
+                <input type="text" name="cliente" class="form-control" placeholder="Nome do Cliente"
+                       th:value="${param.cliente}">
+
+                <!-- Select para status -->
+                <select name="status" class="form-control">
+                    <option value="">Todos os status</option>
+                    <option th:each="s : ${T(petshop.enums.StatusPedidoEnum).values()}"
+                            th:value="${s}" th:text="${s}" th:selected="${s.name() == param.status}">
+                    </option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+        </div>
+
+        <a th:href="@{/pedidos/novo}" class="btn btn-success mb-3">Adicionar Pedido</a>
+
+        <!-- Tabela de pedidos -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Valor Total</th>
+                    <th>Qtd Itens</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pedido : ${pedidosPage.content}">
+                    <td th:text="${pedido.idPedido}"></td>
+                    <td th:text="${pedido.cliente.nome}"></td>
+                    <td th:text="${#temporals.format(pedido.dataPedido, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${pedido.status}"></td>
+                    <td th:text="${pedido.valorTotal}"></td>
+                    <td th:text="${pedido.itens.size()}"></td>
+                    <td>
+                    	<a th:href="@{/pedidos/{id}/itens(id=${pedido.idPedido})}" class="btn btn-sm btn-info">Ver Detalhes</a>
+                        <a th:href="@{/pedidos/editar/{id}(id=${pedido.idPedido})}" class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/pedidos/deletar/{id}(id=${pedido.idPedido})}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Tem certeza que deseja deletar este pedido?');">Deletar</a>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${pedidosPage.first} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/pedidos(pagina=${pedidosPage.number - 1}, cliente=${param.cliente}, status=${param.status})}">
+                        Anterior
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, pedidosPage.totalPages - 1)}"
+                    th:classappend="${i == pedidosPage.number} ? 'active'">
+                    <a class="page-link"
+                       th:href="@{/pedidos(pagina=${i}, cliente=${param.cliente}, status=${param.status})}"
+                       th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${pedidosPage.last} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/pedidos(pagina=${pedidosPage.number + 1}, cliente=${param.cliente}, status=${param.status})}">
+                        Próximo
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

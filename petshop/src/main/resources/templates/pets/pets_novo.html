@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Pet</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="d-flex-full">
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <div class="content p-3">
+        <h2>Novo Pet</h2>
+
+        <form th:action="@{/pets/salvar}" th:object="${pet}" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" th:field="*{nome}" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Espécie</label>
+                <input type="text" th:field="*{especie}" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Raça</label>
+                <input type="text" th:field="*{raca}" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Idade</label>
+                <input type="number" th:field="*{idade}" class="form-control" min="0" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Peso (kg)</label>
+                <input type="number" step="0.1" th:field="*{peso}" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select th:field="*{cliente.idCliente}" class="form-control select2" required>
+                    <option value="" disabled selected>Selecione um cliente</option>
+                    <option th:each="c : ${clientes}"
+                            th:value="${c.idCliente}"
+                            th:text="${c.nome}">
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Cadastrar</button>
+            <a th:href="@{/pets}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+      $('.select2').select2({
+          placeholder: "Selecione um cliente",
+          allowClear: true,
+          width: '100%'
+      });
+  });
+</script>
+</body>
+</html>

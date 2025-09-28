@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Pets</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<div class="d-flex-full">
+
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content p-3">
+        <h1>Pets</h1>
+        <p>Lista de pets cadastrados no sistema.</p>
+
+<!-- Formulário de busca unificado -->
+<div class="mb-3">
+    <label class="form-label">Nome, Raça ou Cliente</label>
+    <form th:action="@{/pets/buscar}" method="get" class="d-flex gap-2">
+
+        <!-- Campo para nome ou raça -->
+        <input type="text" name="busca" class="form-control" placeholder="Nome ou Raça"
+               th:value="${param.busca}">
+
+        <!-- Campo para cliente -->
+        <input type="text" name="cliente" class="form-control" placeholder="Nome do Cliente"
+               th:value="${param.cliente}">
+
+        <!-- Botão único -->
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</div>
+
+        <!-- Botão para adicionar novo pet -->
+        <a th:href="@{/pets/novo}" class="btn btn-success mb-3">Adicionar Pet</a>
+
+		<!-- Tabela de pets -->
+		<table class="table table-striped">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>Nome</th>
+		            <th>Raça</th>
+		            <th>Idade</th>
+		            <th>Peso (kg)</th> <!-- nova coluna -->
+		           <th>Dono</th>
+		           <th>Ações</th>
+		       </tr>
+		   </thead>
+		   <tbody>
+		       <tr th:each="pet : ${petsPage.content}">
+		           <td th:text="${pet.idPet}"></td>
+		           <td th:text="${pet.nome}"></td>
+		           <td th:text="${pet.raca}"></td>
+		           <td th:text="${pet.idade}"></td>
+		           <td th:text="${pet.peso}"></td> <!-- valor do peso -->
+		           <td th:text="${pet.cliente.nome}"></td>
+		           <td>
+		               <a th:href="@{/pets/editar/{id}(id=${pet.idPet})}" class="btn btn-sm btn-warning">Editar</a>
+		               <a th:href="@{/pets/deletar/{id}(id=${pet.idPet})}" class="btn btn-sm btn-danger" 
+		                  onclick="return confirm('Tem certeza que deseja deletar este pet?');">Deletar</a>
+		            </td>
+		        </tr>
+		    </tbody>
+		</table>
+
+        <!-- Paginação -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${petsPage.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/pets(pagina=${petsPage.number - 1}, busca=${param.busca})}">Anterior</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, petsPage.totalPages - 1)}"
+                    th:classappend="${i == petsPage.number} ? 'active'">
+                    <a class="page-link" th:href="@{/pets(pagina=${i}, busca=${param.busca})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${petsPage.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/pets(pagina=${petsPage.number + 1}, busca=${param.busca})}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

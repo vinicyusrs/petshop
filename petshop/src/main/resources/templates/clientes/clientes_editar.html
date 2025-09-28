@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Cliente - PetShop</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="d-flex-full">
+    <!-- Sidebar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content p-3">
+        <h2>Editar Cliente</h2>
+
+        <form th:action="@{/clientes/salvar}" th:object="${cliente}" method="post">
+            <!-- Campo escondido para o ID -->
+            <input type="hidden" th:field="*{idCliente}"/>
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" class="form-control" th:field="*{nome}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">CPF</label>
+                <input type="text" class="form-control" th:field="*{cpf}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control" th:field="*{email}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                <input type="text" class="form-control" th:field="*{telefone}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Endereço</label>
+                <input type="text" class="form-control" th:field="*{endereco}">
+            </div>
+
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a th:href="@{/clientes}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

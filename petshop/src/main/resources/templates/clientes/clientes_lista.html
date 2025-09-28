@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Clientes</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<div class="d-flex-full">
+
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content p-3">
+        <h1>Clientes</h1>
+        <p>Lista de clientes cadastrados no sistema.</p>
+
+		<form th:action="@{/clientes/buscar_cpf_nome}" method="get" class="mb-3 d-flex">
+		    <input type="text" name="busca" class="form-control me-2" placeholder="Digite CPF ou Nome" 
+		           th:value="${param.busca}">
+		    <button type="submit" class="btn btn-primary">Buscar</button>
+		</form>
+
+        <!-- Botão para adicionar novo cliente -->
+        <a th:href="@{/clientes/novo}" class="btn btn-success mb-3">Adicionar Cliente</a>
+
+        <!-- Tabela de clientes -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Endereço</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cliente : ${clientesPage.content}">
+                    <td th:text="${cliente.idCliente}"></td>
+                    <td th:text="${cliente.nome}"></td>
+                    <td th:text="${cliente.cpf}"></td>
+                    <td th:text="${cliente.telefone}"></td>
+                    <td th:text="${cliente.email}"></td>
+                    <td th:text="${cliente.endereco}"></td>
+                    <td>
+                        <a th:href="@{/clientes/editar/{id}(id=${cliente.idCliente})}" class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/clientes/deletar/{id}(id=${cliente.idCliente})}" class="btn btn-sm btn-danger" 
+                           onclick="return confirm('Tem certeza que deseja deletar este cliente?');">Deletar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+	<!-- Paginação -->
+		<nav>
+		    <ul class="pagination">
+		        <li class="page-item" th:classappend="${clientesPage.first} ? 'disabled'">
+		            <a class="page-link" th:href="@{/clientes(pagina=${clientesPage.number - 1})}">Anterior</a>
+		        </li>
+		        <li class="page-item" th:each="i : ${#numbers.sequence(0, clientesPage.totalPages - 1)}"
+		            th:classappend="${i == clientesPage.number} ? 'active'">
+		            <a class="page-link" th:href="@{/clientes(pagina=${i})}" th:text="${i + 1}"></a>
+		        </li>
+		        <li class="page-item" th:classappend="${clientesPage.last} ? 'disabled'">
+		            <a class="page-link" th:href="@{/clientes(pagina=${clientesPage.number + 1})}">Próximo</a>
+		        </li>
+		    </ul>
+		</nav>
+
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

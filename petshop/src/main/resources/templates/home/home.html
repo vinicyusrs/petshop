@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Home</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <!-- CSS global -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- CSS específico do Home -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<div class="d-flex-full">
+
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content">
+        <h1 th:text="${mensagem}">Bem-vindo ao PetShop!</h1>
+        <p>Escolha uma opção no menu lateral para começar a gerenciar o PetShop.</p>
+
+        <!-- Exemplo de cards para Dashboard -->
+        <div class="row mt-4">
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Clientes</h5>
+                        <p class="card-text">Visualize todos os clientes cadastrados.</p>
+                        <a th:href="@{/clientes}" class="btn btn-light btn-sm">Acessar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Pets</h5>
+                        <p class="card-text">Gerencie os pets de seus clientes.</p>
+                        <a th:href="@{/pets}" class="btn btn-light btn-sm">Acessar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Produtos</h5>
+                        <p class="card-text">Controle de rações e produtos disponíveis.</p>
+                        <a th:href="@{/produtos}" class="btn btn-light btn-sm">Acessar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title">Pedidos</h5>
+                        <p class="card-text">Acompanhe todos os pedidos realizados.</p>
+                        <a th:href="@{/pedidos}" class="btn btn-light btn-sm">Acessar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

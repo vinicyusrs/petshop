@@ -1,0 +1,12 @@
+<!-- src/main/resources/templates/layout/fragments/navbar.html -->
+<div th:fragment="navbar" class="sidebar d-flex flex-column p-3 bg-dark text-white">
+    <h3>PetShop</h3>
+    <hr>
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePage=='home'} ? 'active' : ''" th:href="@{/}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePage=='clientes'} ? 'active' : ''" th:href="@{/clientes}">Clientes</a></li>
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePage=='pets'} ? 'active' : ''" th:href="@{/pets}">Pets</a></li>
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePage=='produtos'} ? 'active' : ''" th:href="@{/produtos}">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link" th:classappend="${activePage=='pedidos'} ? 'active' : ''" th:href="@{/pedidos}">Pedidos</a></li>
+    </ul>
+</div>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Produto</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="d-flex-full">
+    <!-- Navbar ou Sidebar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo principal -->
+    <div class="content p-3">
+        <h2>Novo Produto</h2>
+
+        <form th:action="@{/produtos/salvar}" th:object="${produto}" method="post">
+            <!-- Hidden ID -->
+            <input type="hidden" th:field="*{idProduto}" />
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" th:field="*{nome}" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea th:field="*{descricao}" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo</label>
+                <select th:field="*{tipo}" class="form-control" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option th:value="PRODUTO">Produto</option>
+                    <option th:value="SERVICO">Serviço</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Preço</label>
+                <input type="number" step="0.01" th:field="*{preco}" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Estoque</label>
+                <input type="number" th:field="*{estoque}" class="form-control" min="0" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fornecedor</label>
+                <input type="text" th:field="*{fornecedor}" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/produtos}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

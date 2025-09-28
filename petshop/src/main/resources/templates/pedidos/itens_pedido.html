@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Detalhes do Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="d-flex-full">
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+    <div class="content p-3">
+        <h2>Detalhes do Pedido</h2>
+
+        <!-- Dados do pedido -->
+        <div class="mb-3">
+            <label><strong>Cliente:</strong></label>
+            <span th:text="${pedido.cliente.nome}"></span>
+        </div>
+        <div class="mb-3">
+            <label><strong>Status:</strong></label>
+            <span th:text="${pedido.status}"></span>
+        </div>
+        <div class="mb-3">
+            <label><strong>Data do Pedido:</strong></label>
+            <span th:text="${#temporals.format(pedido.dataPedido, 'dd/MM/yyyy HH:mm')}"></span>
+        </div>
+        <div class="mb-3">
+            <label><strong>Valor Total:</strong></label>
+            <span th:text="${pedido.valorTotal}"></span>
+        </div>
+
+        <!-- Tabela de itens -->
+        <h5>Itens do Pedido</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${pedido.itens}">
+                    <td th:text="${item.produto != null ? item.produto.nome : 'Produto não definido'}"></td>
+                    <td th:text="${item.quantidade}"></td>
+                    <td th:text="${item.precoUnitario}"></td>
+                    <td th:text="${item.quantidade * item.precoUnitario}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{/pedidos}" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

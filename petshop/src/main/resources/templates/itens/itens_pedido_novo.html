@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Itens do Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<div class="d-flex-full">
+
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content p-3">
+        <h1>Itens do Pedido</h1>
+        <p>Lista de itens do pedido selecionado.</p>
+
+        <!-- Botão para adicionar novo item -->
+        <a th:href="@{/itens/novo(pedidoId=${pedido.idPedido})}" class="btn btn-success mb-3">Adicionar Item</a>
+
+        <!-- Tabela de itens -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${itens}">
+                    <td th:text="${item.idItem}"></td>
+                    <td th:text="${item.produto.nome}"></td>
+                    <td th:text="${item.quantidade}"></td>
+                    <td th:text="${item.precoUnitario}"></td>
+                    <td th:text="${item.quantidade * item.precoUnitario}"></td>
+                    <td>
+                        <a th:href="@{/itens/editar/{id}(id=${item.idItem})}" class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/itens/deletar/{id}(id=${item.idItem})}" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Tem certeza que deseja deletar este item?');">Deletar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="d-flex-full">
+
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3 bg-dark text-white">
+        <h3>PetShop</h3>
+        <hr>
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item"><a class="nav-link text-white" th:href="@{/home}">Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" th:href="@{/clientes}">Clientes</a></li>
+            <li class="nav-item"><a class="nav-link text-white" th:href="@{/pets}">Pets</a></li>
+            <li class="nav-item"><a class="nav-link text-white" th:href="@{/produtos}">Produtos</a></li>
+            <li class="nav-item"><a class="nav-link text-white" th:href="@{/pedidos}">Pedidos</a></li>
+        </ul>
+    </div>
+
+    <!-- Conteúdo dinâmico -->
+    <div class="content p-3" layout:fragment="conteudo">
+        <!-- Aqui o conteúdo de cada página será injetado -->
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

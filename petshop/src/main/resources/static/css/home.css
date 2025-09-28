@@ -1,0 +1,36 @@
+/* ===== Home.css ===== */
+
+/* Sidebar lateral */
+.sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 100vh;
+    background-color: #0d6efd;
+}
+
+.sidebar a {
+    color: white;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 4px;
+}
+
+.sidebar a:hover {
+    background-color: #0b5ed7;
+}
+
+/* Conteúdo específico da Home */
+.content {
+    padding: 20px;
+    width: 100%;
+}
+
+/* Cabeçalho do Home */
+.content h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.content p {
+    font-size: 1.1rem;
+}

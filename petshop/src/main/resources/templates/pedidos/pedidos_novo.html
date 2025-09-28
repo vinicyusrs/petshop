@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo/Editar Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="d-flex-full">
+
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content p-3">
+        <h2 th:text="${pedido.idPedido} != null ? 'Editar Pedido' : 'Novo Pedido'"></h2>
+
+        <form th:action="@{/pedidos/salvar}" th:object="${pedido}" method="post">
+
+            <!-- Campo oculto para ID do pedido -->
+            <input type="hidden" th:field="*{idPedido}" />
+
+            <!-- Selecionar Cliente -->
+            <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select th:field="*{cliente.idCliente}" class="form-control" required>
+                    <option value="" disabled selected>Selecione um cliente</option>
+                    <option th:each="c : ${clientes}" 
+                            th:value="${c.idCliente}" 
+                            th:text="${c.nome}" 
+                            th:selected="${pedido.cliente != null and c.idCliente == pedido.cliente.idCliente}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Selecionar Status -->
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select th:field="*{status}" class="form-control" required>
+                    <option th:each="s : ${T(petshop.enums.StatusPedidoEnum).values()}"
+                            th:value="${s}" 
+                            th:text="${s}" 
+                            th:selected="${pedido.status != null} ? ${s.name() == pedido.status.name()} : ${s.name() == 'PENDENTE'}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Itens do Pedido -->
+            <h5>Itens do Pedido</h5>
+            <table class="table table-bordered" id="itens-pedido-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unitário</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item, iterStat : *{itens}">
+                        <td>
+                            <select th:field="*{itens[__${iterStat.index}__].produto.idProduto}" class="form-control" required onchange="atualizarPreco(this)">
+                                <option value="" disabled selected>Selecione um produto</option>
+                                <option th:each="p : ${produtos}" 
+                                        th:value="${p.idProduto}" 
+                                        th:text="${p.nome}" 
+                                        th:data-preco="${p.preco}" 
+                                        th:selected="${item.produto != null and p.idProduto == item.produto.idProduto}">
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" th:field="*{itens[__${iterStat.index}__].quantidade}" class="form-control" min="1" value="1" required>
+                        </td>
+                        <td>
+                            <input type="number" th:field="*{itens[__${iterStat.index}__].precoUnitario}" class="form-control preco-unitario" step="0.01" required readonly>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removerItem(this)">Remover</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-secondary mb-3" onclick="adicionarItem()">Adicionar Item</button>
+            <br>
+            <button type="submit" class="btn btn-primary">Salvar Pedido</button>
+            <a th:href="@{/pedidos}" class="btn btn-secondary">Cancelar</a>
+
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Passa produtos do servidor para JS -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const produtos = /*[[${produtos}]]*/ [];
+    /*]]>*/
+</script>
+
+<script>
+function adicionarItem() {
+    let tabela = document.getElementById('itens-pedido-table').getElementsByTagName('tbody')[0];
+    let index = tabela.rows.length;
+
+    // Monta opções de produtos com data-preco
+    let opcoes = '<option value="" disabled selected>Selecione um produto</option>';
+    produtos.forEach(p => {
+        opcoes += `<option value="${p.idProduto}" data-preco="${p.preco}">${p.nome}</option>`;
+    });
+
+    let novaLinha = `
+    <tr>
+        <td>
+            <select name="itens[${index}].produto.idProduto" class="form-control" required onchange="atualizarPreco(this)">
+                ${opcoes}
+            </select>
+        </td>
+        <td>
+            <input type="number" name="itens[${index}].quantidade" class="form-control" min="1" value="1" required>
+        </td>
+        <td>
+            <input type="number" name="itens[${index}].precoUnitario" class="form-control preco-unitario" step="0.01" required readonly>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm" onclick="removerItem(this)">Remover</button>
+        </td>
+    </tr>`;
+    tabela.insertAdjacentHTML('beforeend', novaLinha);
+}
+
+function removerItem(botao) {
+    let linha = botao.closest('tr');
+    linha.remove();
+}
+
+function atualizarPreco(select) {
+    const linha = select.closest('tr');
+    const precoInput = linha.querySelector('.preco-unitario');
+    const opcaoSelecionada = select.options[select.selectedIndex];
+    precoInput.value = opcaoSelecionada.dataset.preco || 0;
+}
+</script>
+
+</body>
+</html>

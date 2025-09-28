@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PetShop - Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<div class="d-flex-full">
+
+    <!-- Navbar -->
+    <div th:replace="~{layout/fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo -->
+    <div class="content p-3">
+        <h1>Produtos</h1>
+        <p>Lista de produtos cadastrados no sistema.</p>
+
+        <!-- Formulário de busca -->
+        <div class="mb-3">
+            <label class="form-label">Nome do Produto</label>
+            <form th:action="@{/produtos}" method="get" class="d-flex gap-2">
+                <input type="text" name="busca" class="form-control" placeholder="Nome do Produto"
+                       th:value="${param.busca}">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+        </div>
+
+        <!-- Botão para adicionar novo produto -->
+        <a th:href="@{/produtos/novo}" class="btn btn-success mb-3">Adicionar Produto</a>
+
+        <!-- Tabela de produtos -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Tipo</th>
+                    <th>Preço</th>
+                    <th>Estoque</th>
+                    <th>Fornecedor</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${produtosPage.content}">
+                    <td th:text="${produto.idProduto}"></td>
+                    <td th:text="${produto.nome}"></td>
+                    <td th:text="${produto.descricao}"></td>
+                    <td th:text="${produto.tipo}"></td>
+                    <td th:text="${produto.preco}"></td>
+                    <td th:text="${produto.estoque}"></td>
+                    <td th:text="${produto.fornecedor}"></td>
+                    <td>
+                        <a th:href="@{/produtos/editar/{id}(id=${produto.idProduto})}" class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/produtos/deletar/{id}(id=${produto.idProduto})}" class="btn btn-sm btn-danger" 
+                           onclick="return confirm('Tem certeza que deseja deletar este produto?');">Deletar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${produtosPage.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{/produtos(pagina=${produtosPage.number - 1}, busca=${param.busca})}">Anterior</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, produtosPage.totalPages - 1)}"
+                    th:classappend="${i == produtosPage.number} ? 'active'">
+                    <a class="page-link" th:href="@{/produtos(pagina=${i}, busca=${param.busca})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${produtosPage.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{/produtos(pagina=${produtosPage.number + 1}, busca=${param.busca})}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
