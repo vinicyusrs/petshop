@@ -90,4 +90,5 @@ public class ProdutoController {
         model.addAttribute("produtos", produtoService.buscarProdutosPorNome(nome));
         return "produtos/produtos_lista";
     }
+    
 }
