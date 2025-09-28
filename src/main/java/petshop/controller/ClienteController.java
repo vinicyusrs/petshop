@@ -42,7 +42,6 @@ public class ClienteController {
         return "clientes/clientes_novo";
     }
 
-
     // Salvar cliente
     @PostMapping("/salvar")
     public String salvarCliente(@ModelAttribute("cliente") Cliente cliente) {
