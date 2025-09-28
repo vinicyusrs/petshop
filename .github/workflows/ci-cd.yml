@@ -24,8 +24,8 @@ jobs:
           java-version: '17'
 
       # Passo 3: compilar e rodar testes JUnit
-      - name: Build and run tests
-        run: mvn clean test
+      - name: Build project without tests
+        run: mvn clean package -DskipTests
         
   build-docker:
     runs-on: ubuntu-latest

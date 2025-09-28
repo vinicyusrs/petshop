@@ -41,7 +41,6 @@ public class PetController {
         return "pets/pets_lista";
     }
 
-
     // Formulário para novo pet
     @GetMapping("/novo")
     public String novoPet(Model model) {
