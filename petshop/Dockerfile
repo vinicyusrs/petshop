@@ -1,13 +1,13 @@
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-alpine
 
 # Criar pasta da aplicação
 WORKDIR /app
 
 # Copiar o JAR gerado pelo Maven
-COPY target/*.jar app.jar
+COPY target/petshop-0.0.1-SNAPSHOT.jar app.jar
 
 # Expõe a porta (mesma do application.properties)
-EXPOSE 8082
+EXPOSE 8081
 
 # Comando para rodar o Spring Boot
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
